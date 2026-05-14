@@ -3,9 +3,611 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MON PORTFOLIO</title>
+    <link rel="stylesheet" href="Index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    /* /* =============================================
+   PORTFOLIO - LAMINE DIOUF
+   Feuille de styles principale
+   ============================================= */
+
+/* ---- VARIABLES GLOBALES ---- */
+:root {
+  --color-primary: darkblue;
+  --color-bg: whitesmoke;
+  --color-white: white;
+  --color-black: black;
+  --color-gray: gray;
+  --font-main: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  --border-radius-sm: 5px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 15px;
+  --border-std: 2px solid black;
+  --border-white: 2px solid white;
+}
+
+/* ---- RESET & BASE ---- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: aliceblue;
+  background-color: var(--color-white);
+}
+
+/* =============================================
+   NAVBAR
+   ============================================= */
+.navbar {
+  width: 100%;
+  border: 4px solid var(--color-white);
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+  background-color: var(--color-bg);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-badge {
+  width: 50px;
+  height: 50px;
+  background-color: blue;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--border-radius-lg);
+  margin-top: 10px;
+  margin-left: 10px;
+  color: var(--color-white);
+  font-weight: bold;
+}
+
+.navbar-name {
+  font-family: var(--font-main);
+  color: var(--color-black);
+  font-size: larger;
+  margin-left: 10px;
+  align-self: center;
+}
+
+.navbar-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  color: var(--color-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-main);
+  gap: 40px;
+  padding-right: 40px;
+}
+
+.nav-links li {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* =============================================
+   HERO SECTION
+   ============================================= */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid var(--color-black);
+  width: 99%;
+  min-height: 800px;
+  margin-top: 80px;
+  border-radius: var(--border-radius-md);
+  padding: 20px;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 60%;
+}
+
+/* Badge bouton haut */
+.badge-btn {
+  width: 220px;
+  margin-left: 20px;
+  border-radius: var(--border-radius-lg);
+  height: 40px;
+  border: none;
+  background-color: var(--color-bg);
+  cursor: pointer;
+  font-family: var(--font-main);
+}
+
+.star-icon {
+  font-size: 15px;
+  color: yellow;
+}
+
+/* Texte principal */
+.hero-title {
+  color: var(--color-primary);
+  font-size: 50px;
+  font-family: var(--font-main);
+  margin: 15px 20px;
+  line-height: 1.3;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  color: var(--color-black);
+  margin: 15px 20px;
+  font-weight: normal;
+  line-height: 1.7;
+}
+
+/* Boutons d'action */
+.hero-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  margin-left: 20px;
+}
+
+.btn-primary {
+  width: 220px;
+  border-radius: var(--border-radius-lg);
+  height: 60px;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-family: var(--font-main);
+  font-size: larger;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  width: 220px;
+  border-radius: var(--border-radius-lg);
+  height: 60px;
+  border: 2px solid var(--color-primary);
+  background-color: transparent;
+  color: var(--color-primary);
+  font-family: var(--font-main);
+  font-size: larger;
+  cursor: pointer;
+}
+
+/* Stats */
+.hero-stats {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.stat-card {
+  width: 220px;
+  border-radius: var(--border-radius-lg);
+  min-height: 80px;
+  border: var(--border-std);
+  font-family: var(--font-main);
+  color: var(--color-primary);
+  font-size: larger;
+  text-align: center;
+  background-color: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.stat-card p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Partie visuelle droite */
+.hero-visual {
+  width: 500px;
+  border: var(--border-std);
+  margin-right: 20px;
+  height: 300px;
+  border-radius: var(--border-radius-md);
+  position: relative;
+  flex-shrink: 0;
+  background-image: url(data:image/jpeg;base64,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);
+background-repeat: no-repeat;
+background-size: cover;
+}
+
+.hero-visual-card {
+  width: 200px;
+  height: 70px;
+  display: flex;
+  border-radius: var(--border-radius-md);
+  border: var(--border-std);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+}
+
+.visual-title {
+  color: var(--color-primary);
+  font-size: 14px;
+  font-family: var(--font-main);
+}
+
+.visual-subtitle {
+  color: var(--color-gray);
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.hero-visual-accent {
+  width: 100px;
+  height: 50px;
+  border-radius: var(--border-radius-md);
+  border: var(--border-std);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+/* =============================================
+   SECTION LABEL (titre centré)
+   ============================================= */
+.section-label {
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 30px;
+  border: var(--border-std);
+  margin: 20px auto 0 auto;
+  margin-left: 550px;
+  color: var(--color-black);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-main);
+}
+
+/* =============================================
+   A PROPOS
+   ============================================= */
+.about-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+  padding: 0 100px;
+  gap: 30px;
+}
+
+.about-card {
+  width: 450px;
+  min-height: 200px;
+  border: var(--border-std);
+  border-radius: var(--border-radius-md);
+  padding: 20px;
+}
+
+.card-title {
+  color: var(--color-primary);
+  margin-bottom: 15px;
+  font-family: var(--font-main);
+}
+
+.card-text {
+  color: var(--color-black);
+  line-height: 1.6;
+}
+
+/* =============================================
+   PROJETS
+   ============================================= */
+
+
+/* =============================================
+   PROFIL
+   ============================================= */
+.profile-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  gap: 20px;
+  padding: 0 10px;
+}
+
+.profile-card {
+  width: 10px;
+  height: 100px;
+  border: var(--border-std);
+  border-radius: var(--border-radius-md);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =============================================
+   CONTACT BANNER
+   ============================================= */
+.contact-banner {
+  width: 50%;
+  height: 250px;
+  border: var(--border-std);
+  border-radius: var(--border-radius-md);
+  margin: 0 auto;
+  margin-left: 330px;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* ===== PROJETS ===== */
+.projets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+  margin-top: 20px;
+}
+
+.projet-card {
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  overflow: hidden;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.projet-card:hover { opacity: 0.85; }
+
+.projet-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.projet-body {
+  padding: 12px 14px 16px;
+  background-color: white;
+}
+
+.projet-titre {
+  font-family: var(--font-main);
+  font-size: 14px;
+  color: var(--color-black);
+  margin-bottom: 6px;
+}
+
+.projet-desc {
+  font-size: 12px;
+  color: var(--color-gray);
+  line-height: 1.6;
+}
+</style>
 </head>
-<body>
-    <h1>Bonjour je m'appelle Ma sithiou </h1>
+<body >
+
+    <!-- NAVBAR -->.;'
+    
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="logo-badge">LD</div>
+            <p class="navbar-name">LAMINE DIOUF</p>
+            <br>
+           
+        </div>
+        <div class="navbar-right">
+            <ul class="nav-links">
+                <li>Accueil</li>
+                <li>A propos</li>
+                <li>Projets</li>
+                <li>Profil</li>
+                <li>Contact</li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <button class="badge-btn">
+                <i class="fa-solid fa-star star-icon"></i> portfolio moderne &amp; evolutif
+            </button>
+            <div class="hero-text">
+                <h1 class="hero-title">Construire <br> mon parcours <br> avec passion, <br> creativite et <br> ambition</h1>
+                <h5 class="hero-subtitle">
+                    Bonjour, je suis Lamine Diouf, etudiant passionne d'informatique.<br>
+                    l'apprentissage et la creation d'interfaces modernes. Je developpe<br>
+                    progressivement mon univers academique et personnel a travers des<br>
+                    projets concrets, simples et soignes.
+                </h5>
+            </div>
+            <div class="hero-actions">
+                <button class="btn-primary">Voir mes projets</button>
+                <button class="btn-secondary">Me contacter</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <strong><p>5+<br>projets realises</p></strong>
+                </div>
+                <div class="stat-card">
+                    <strong><p>50%<br>modelisations et progression</p></strong>
+                </div>
+                <div class="stat-card">
+                    <strong><p>UI<br>Design & web moderne</p></strong>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+             
+            <div class="hero-visual-card">
+                <h4 class="visual-title">CREATIVITE<br><span class="visual-subtitle">idees carres et visibles</span></h4>
+            </div>
+            <div class="hero-visual-accent">
+               
+            </div>
+        </div>
+    </section>
+
+    <br><br><br><br>
+
+    <!-- A PROPOS -->
+    <div class="section-label">
+        <strong>A PROPOS DE MOI</strong>
+    </div>
+
+    <br><br><br><br>
+
+    <div class="about-grid">
+        <div class="about-card">
+            <h3 class="card-title">Mon parcours</h3>
+            <p class="card-text">Je suis une étudiant curieux et motivé, avec un fort intérêt pour les outils
+numériques, le web et la communication visuelle. J'aime apprendre en
+pratiquant, construire de petits projets concrets et améliorer progressivement
+mes compétences.</p>
+        </div>
+        <div class="about-card">
+            <h3 class="card-title">Mes objectifs</h3>
+            <p class="card-text">Mon objectif est de développer un profil solide, capable de relier connaissances
+académiques, créativité personnelle et compétences techniques. Je souhaite
+bâtir un portfolio clair, sérieux et évolutif.</p>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="about-grid">
+        <div class="about-card">
+            <h3 class="card-title">Mes qualites</h3>
+            <p class="card-text">Je suis organisé, persévérent, attentif aux détails et toujours prêt à
+apprendre. J'aime les interfaces bien structurées, les contenues lisible et les
+réalisations simples mais soignées.</p>
+        </div>
+        <div class="about-card">
+            <h3 class="card-title">Ce que je recherche</h3>
+            <p class="card-text">Je recherche des opportunités d'apprentissage, des collaborations
+académiques et des expériences qui me permettront de progresser dans le
+développement web, le design et la valorisation de projets personnels.</p>
+        </div>
+    </div>
+
+    <br><br><br><br>
+
+    <!-- PROJETS -->
+     <!-- ===== PROJETS ===== -->
+<div class="section-label" style="margin-left: auto; margin-right: auto;"> <strong>MES PROJETS</strong> </div>
+
+<div class="projets-grid">
+
+  <div class="projet-card">
+    <img src="image 1.jpg" alt="Mini site vitrine">
+    <div class="projet-body">
+      <h3 class="projet-titre"> <strong>  Mini site vitrine</strong></h3>
+      <p class="projet-desc"> <strong>Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle. </strong></p>
+    </div>
+  </div>
+
+  <div class="projet-card">
+    <img src="image 2.jpg" alt="Interface web">
+    <div class="projet-body">
+      <h3 class="projet-titre">Interface web</h3>
+      <p class="projet-desc"> <strong> d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle.</strong></p>
+    </div>
+  </div>
+
+  <div class="projet-card">
+    <img src="image 3.jpg" alt="Projet JavaScript">
+    <div class="projet-body">
+      <h3 class="projet-titre">Projet JavaScript</h3>
+      <p class="projet-desc"> <strong>Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle. </strong></p>
+    </div>
+  </div>
+
+  <div class="projet-card">
+    <img src="image 4.jpg" alt="Travail en groupe">
+    <div class="projet-body">
+      <h3 class="projet-titre">Travail en groupe</h3>
+      <p class="projet-desc"> <strong>Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle. </strong></p>
+    </div>
+  </div>
+
+  <div class="projet-card">
+    <img src="image 5.jpg" alt="Présentation académique">
+    <div class="projet-body">
+      <h3 class="projet-titre">Présentation académique</h3>
+      <p class="projet-desc"><strong>Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle. </strong></p>
+    </div>
+  </div>
+
+  <div class="projet-card">
+    <img src="image 6.jpg" alt="Apprentissage continu">
+    <div class="projet-body">
+      <h3 class="projet-titre">Apprentissage continu</h3>
+      <p class="projet-desc"> <strong> Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle.</strong></p>
+    </div>
+  </div>
+</div>
+</div>
+ <br><br><br><br>
+    <!-- PROFIL -->
+    <div class="section-label">
+        <strong>MON PROFIL</strong>
+    </div>
+
+    <br><br><br><br>
+
+    <div class="profile-grid">
+        <div class="profile-card">
+             <h3 class="card-title">2026</h3>
+            <p class="card-text">Annee de progression et de consolidation </p>
+        </div>
+        <div class="profile-card"><h3 class="card-title">5+</h3><br>
+            <p class="card-text">projets d'apprentissage realises</p></div>
+        <div class="profile-card"><h3 class="card-title">100%</h3><br>
+            <p class="card-text">Motivation pour apprendre et evoluer</p></div>
+        <div class="profile-card"><h3 class="card-title">UI</h3><br>
+            <p class="card-text">interet pour le web et le design visuel</p></div>
+    </div>
+
+    <br><br>
+
+    <!-- CONTACT BANNER -->
+   <div  style="width: 800px; height: 200px; border: 2px solid black; margin-left: 250px; align-items: center; justify-content: center; text-align: center;">
+     <h3 class="card-title">CONTACT</h3>
+            <p class="card-text">Je suis organisé, persévérent, attentif aux détails et toujours prêt à
+apprendre. J'aime les interfaces bien structurées, les contenues lisible et les
+réalisations simples mais soignées.</p>
+  
+ 
+                <button class="btn-primary">Envoyer un mail</button>
+                <button class="btn-secondary">telecharger Mon CV</button>
+            
+    </div>
+
 </body>
 </html>
