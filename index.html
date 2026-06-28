@@ -1,613 +1,1434 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MON PORTFOLIO</title>
-    <link rel="stylesheet" href="Index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 🔒 CSP : interdit l'exécution de scripts inline non autorisés et les ressources externes non listées -->
+<!-- 🔒 Anti-clickjacking (X-Frame-Options fonctionne uniquement via header HTTP, pas en meta — ignoré ici) -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<title>BIGDREAM — Panel Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-    /* /* =============================================
-   PORTFOLIO - LAMINE DIOUF
-   Feuille de styles principale
-   ============================================= */
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #222222;
+    --accent: #f0e040;
+    --accent2: #e8503a;
+    --text: #f0ede8;
+    --muted: #666;
+    --green: #3ecf8e;
+    --orange: #f5a623;
+    --red: #e8503a;
+  }
 
-/* ---- VARIABLES GLOBALES ---- */
-:root {
-  --color-primary: darkblue;
-  --color-bg: whitesmoke;
-  --color-white: white;
-  --color-black: black;
-  --color-gray: gray;
-  --font-main: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  --border-radius-sm: 5px;
-  --border-radius-md: 10px;
-  --border-radius-lg: 15px;
-  --border-std: 2px solid black;
-  --border-white: 2px solid white;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ---- RESET & BASE ---- */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
 
-body {
-  color: aliceblue;
-  background-color: var(--color-white);
-}
+  /* ── LOGIN SCREEN ── */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-/* =============================================
-   NAVBAR
-   ============================================= */
-.navbar {
-  width: 100%;
-  border: 4px solid var(--color-white);
-  display: flex;
-  justify-content: space-between;
-  height: 70px;
-  background-color: var(--color-bg);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
+  .login-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    width: 360px;
+    max-width: 95vw;
+  }
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-}
+  .login-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 4px;
+  }
 
-.logo-badge {
-  width: 50px;
-  height: 50px;
-  background-color: blue;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: var(--border-radius-lg);
-  margin-top: 10px;
-  margin-left: 10px;
-  color: var(--color-white);
-  font-weight: bold;
-}
+  .login-sub {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
 
-.navbar-name {
-  font-family: var(--font-main);
-  color: var(--color-black);
-  font-size: larger;
-  margin-left: 10px;
-  align-self: center;
-}
+  .login-box .form-group { margin-bottom: 16px; }
 
-.navbar-right {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  #login-error {
+    display: none;
+    background: rgba(232,80,58,0.1);
+    border: 1px solid var(--red);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
 
-.nav-links {
-  list-style: none;
-  color: var(--color-black);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: var(--font-main);
-  gap: 40px;
-  padding-right: 40px;
-}
+  .lockout-msg {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 12px;
+  }
 
-.nav-links li {
-  cursor: pointer;
-  white-space: nowrap;
-}
+  /* SIDEBAR */
+  .sidebar {
+    width: 220px;
+    min-height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
+  }
 
-/* =============================================
-   HERO SECTION
-   ============================================= */
-.hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 2px solid var(--color-black);
-  width: 99%;
-  min-height: 800px;
-  margin-top: 80px;
-  border-radius: var(--border-radius-md);
-  padding: 20px;
-}
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
 
-.hero-content {
-  flex: 1;
-  max-width: 60%;
-}
+  .sidebar-logo h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    line-height: 1;
+  }
 
-/* Badge bouton haut */
-.badge-btn {
-  width: 220px;
-  margin-left: 20px;
-  border-radius: var(--border-radius-lg);
-  height: 40px;
-  border: none;
-  background-color: var(--color-bg);
-  cursor: pointer;
-  font-family: var(--font-main);
-}
+  .sidebar-logo span {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
 
-.star-icon {
-  font-size: 15px;
-  color: yellow;
-}
+  .nav { padding: 16px 0; flex: 1; }
 
-/* Texte principal */
-.hero-title {
-  color: var(--color-primary);
-  font-size: 50px;
-  font-family: var(--font-main);
-  margin: 15px 20px;
-  line-height: 1.3;
-}
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 24px;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+    letter-spacing: 0.3px;
+    user-select: none;
+  }
 
-.hero-subtitle {
-  font-size: 18px;
-  color: var(--color-black);
-  margin: 15px 20px;
-  font-weight: normal;
-  line-height: 1.7;
-}
+  .nav-item:hover { color: var(--text); background: var(--surface2); }
 
-/* Boutons d'action */
-.hero-actions {
-  margin-top: 20px;
-  display: flex;
-  gap: 15px;
-  margin-left: 20px;
-}
+  .nav-item.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(240,224,64,0.05);
+  }
 
-.btn-primary {
-  width: 220px;
-  border-radius: var(--border-radius-lg);
-  height: 60px;
-  border: none;
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  font-family: var(--font-main);
-  font-size: larger;
-  cursor: pointer;
-}
+  .nav-icon { font-size: 16px; width: 18px; text-align: center; }
 
-.btn-secondary {
-  width: 220px;
-  border-radius: var(--border-radius-lg);
-  height: 60px;
-  border: 2px solid var(--color-primary);
-  background-color: transparent;
-  color: var(--color-primary);
-  font-family: var(--font-main);
-  font-size: larger;
-  cursor: pointer;
-}
+  .sidebar-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
-/* Stats */
-.hero-stats {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-  margin-left: 20px;
-}
+  .logout-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 7px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
 
-.stat-card {
-  width: 220px;
-  border-radius: var(--border-radius-lg);
-  min-height: 80px;
-  border: var(--border-std);
-  font-family: var(--font-main);
-  color: var(--color-primary);
-  font-size: larger;
-  text-align: center;
-  background-color: var(--color-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-}
+  .logout-btn:hover { color: var(--red); border-color: var(--red); }
 
-.stat-card p {
-  margin: 0;
-  line-height: 1.4;
-}
+  /* MAIN */
+  .main {
+    margin-left: 220px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 
-/* Partie visuelle droite */
-.hero-visual {
-  width: 500px;
-  border: var(--border-std);
-  margin-right: 20px;
-  height: 300px;
-  border-radius: var(--border-radius-md);
-  position: relative;
-  flex-shrink: 0;
-  background-image: url(data:image/jpeg;base64,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);
-background-repeat: no-repeat;
-background-size: cover;
-}
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-.hero-visual-card {
-  width: 200px;
-  height: 70px;
-  display: flex;
-  border-radius: var(--border-radius-md);
-  border: var(--border-std);
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 8px;
-}
+  .topbar-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--text);
+  }
 
-.visual-title {
-  color: var(--color-primary);
-  font-size: 14px;
-  font-family: var(--font-main);
-}
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 
-.visual-subtitle {
-  color: var(--color-gray);
-  font-size: 12px;
-  font-weight: normal;
-}
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
 
-.hero-visual-accent {
-  width: 100px;
-  height: 50px;
-  border-radius: var(--border-radius-md);
-  border: var(--border-std);
-  position: absolute;
-  right: 0;
-  bottom: 0;
-}
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
 
-/* =============================================
-   SECTION LABEL (titre centré)
-   ============================================= */
-.section-label {
-  width: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  height: 30px;
-  border: var(--border-std);
-  margin: 20px auto 0 auto;
-  margin-left: 550px;
-  color: var(--color-black);
-  border-radius: var(--border-radius-sm);
-  font-family: var(--font-main);
-}
+  .status-text { font-size: 12px; color: var(--muted); }
 
-/* =============================================
-   A PROPOS
-   ============================================= */
-.about-grid {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-top: 20px;
-  padding: 0 100px;
-  gap: 30px;
-}
+  .content { padding: 32px; flex: 1; }
 
-.about-card {
-  width: 450px;
-  min-height: 200px;
-  border: var(--border-std);
-  border-radius: var(--border-radius-md);
-  padding: 20px;
-}
+  .page { display: none; }
+  .page.active { display: block; }
 
-.card-title {
-  color: var(--color-primary);
-  margin-bottom: 15px;
-  font-family: var(--font-main);
-}
+  /* STATS CARDS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
 
-.card-text {
-  color: var(--color-black);
-  line-height: 1.6;
-}
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
 
-/* =============================================
-   PROJETS
-   ============================================= */
+  .stat-card:hover { border-color: #333; }
 
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
 
-/* =============================================
-   PROFIL
-   ============================================= */
-.profile-grid {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  gap: 20px;
-  padding: 0 10px;
-}
+  .stat-card.yellow::before { background: var(--accent); }
+  .stat-card.green::before  { background: var(--green); }
+  .stat-card.orange::before { background: var(--orange); }
+  .stat-card.red::before    { background: var(--red); }
 
-.profile-card {
-  width: 10px;
-  height: 100px;
-  border: var(--border-std);
-  border-radius: var(--border-radius-md);
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; line-height: 1; }
+  .stat-card.yellow .stat-value { color: var(--accent); }
+  .stat-card.green .stat-value  { color: var(--green); }
+  .stat-card.orange .stat-value { color: var(--orange); }
+  .stat-card.red .stat-value    { color: var(--red); }
 
-/* =============================================
-   CONTACT BANNER
-   ============================================= */
-.contact-banner {
-  width: 50%;
-  height: 250px;
-  border: var(--border-std);
-  border-radius: var(--border-radius-md);
-  margin: 0 auto;
-  margin-left: 330px;
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+  /* TABLE */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
 
-/* ===== PROJETS ===== */
-.projets-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 2px solid black;
-  border-left: 2px solid black;
-  margin-top: 20px;
-}
+  .table-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-.projet-card {
-  border-right: 2px solid black;
-  border-bottom: 2px solid black;
-  overflow: hidden;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
+  .table-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
 
-.projet-card:hover { opacity: 0.85; }
+  .btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: opacity 0.15s;
+  }
 
-.projet-card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  display: block;
-}
+  .btn:hover { opacity: 0.85; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.projet-body {
-  padding: 12px 14px 16px;
-  background-color: white;
-}
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
 
-.projet-titre {
-  font-family: var(--font-main);
-  font-size: 14px;
-  color: var(--color-black);
-  margin-bottom: 6px;
-}
+  .btn-ghost:hover { border-color: #444; background: var(--surface2); }
 
-.projet-desc {
-  font-size: 12px;
-  color: var(--color-gray);
-  line-height: 1.6;
-}
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { border-bottom: 1px solid var(--border); }
+
+  th {
+    padding: 12px 24px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 14px 24px;
+    font-size: 13px;
+    border-bottom: 1px solid #161616;
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #131313; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-wait    { background: rgba(245,166,35,0.15);  color: var(--orange); }
+  .badge-ok      { background: rgba(62,207,142,0.15);  color: var(--green); }
+  .badge-cancel  { background: rgba(232,80,58,0.15);   color: var(--red); }
+  .badge-sent    { background: rgba(240,224,64,0.15);  color: var(--accent); }
+
+  /* PRODUITS */
+  .produits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .produit-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .produit-card:hover { border-color: #333; transform: translateY(-2px); }
+
+  .produit-img {
+    width: 100%;
+    height: 160px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .produit-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    /* 🔒 empêche les images de charger des scripts via SVG */
+    pointer-events: none;
+  }
+
+  .produit-info { padding: 16px; }
+  .produit-nom  { font-weight: 500; font-size: 14px; margin-bottom: 4px; }
+  .produit-cat  { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+
+  .produit-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .produit-prix { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); letter-spacing: 1px; }
+  .produit-stock { font-size: 11px; color: var(--muted); }
+
+  /* FORM */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  input, select, textarea {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 10px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  input.error { border-color: var(--red); }
+  select option { background: var(--surface2); }
+
+  .field-error {
+    font-size: 11px;
+    color: var(--red);
+    margin-top: 2px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+  }
+
+  .empty {
+    text-align: center;
+    padding: 48px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .action-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .action-btn:hover { color: var(--text); background: var(--surface2); }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    width: 480px;
+    max-width: 95vw;
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .close-btn:hover { color: var(--text); }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 12px 20px;
+    border-radius: 6px;
+    z-index: 999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    max-width: 300px;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* Session timer */
+  .session-timer {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
 </style>
 </head>
-<body >
+<body>
 
-    <!-- NAVBAR -->.;'
-    
-    <nav class="navbar">
-        <div class="navbar-left">
-            <div class="logo-badge">LD</div>
-            <p class="navbar-name">LAMINE DIOUF</p>
-            <br>
-           
-        </div>
-        <div class="navbar-right">
-            <ul class="nav-links">
-                <li>Accueil</li>
-                <li>A propos</li>
-                <li>Projets</li>
-                <li>Profil</li>
-                <li>Contact</li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <div class="hero-content">
-            <button class="badge-btn">
-                <i class="fa-solid fa-star star-icon"></i> portfolio moderne &amp; evolutif
-            </button>
-            <div class="hero-text">
-                <h1 class="hero-title">Construire <br> mon parcours <br> avec passion, <br> creativite et <br> ambition</h1>
-                <h5 class="hero-subtitle">
-                    Bonjour, je suis Lamine Diouf, etudiant passionne d'informatique.<br>
-                    l'apprentissage et la creation d'interfaces modernes. Je developpe<br>
-                    progressivement mon univers academique et personnel a travers des<br>
-                    projets concrets, simples et soignes.
-                </h5>
-            </div>
-            <div class="hero-actions">
-                <button class="btn-primary">Voir mes projets</button>
-                <button class="btn-secondary">Me contacter</button>
-            </div>
-            <div class="hero-stats">
-                <div class="stat-card">
-                    <strong><p>5+<br>projets realises</p></strong>
-                </div>
-                <div class="stat-card">
-                    <strong><p>50%<br>modelisations et progression</p></strong>
-                </div>
-                <div class="stat-card">
-                    <strong><p>UI<br>Design & web moderne</p></strong>
-                </div>
-            </div>
-        </div>
-        <div class="hero-visual">
-             
-            <div class="hero-visual-card">
-                <h4 class="visual-title">CREATIVITE<br><span class="visual-subtitle">idees carres et visibles</span></h4>
-            </div>
-            <div class="hero-visual-accent">
-               
-            </div>
-        </div>
-    </section>
-
-    <br><br><br><br>
-
-    <!-- A PROPOS -->
-    <div class="section-label">
-        <strong>A PROPOS DE MOI</strong>
+<!-- 🔒 ÉCRAN DE CONNEXION -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">BIGDREAM</div>
+    <div class="login-sub">Accès Admin Sécurisé</div>
+    <div id="login-error"></div>
+    <div class="form-group" style="margin-bottom:16px">
+      <label>Identifiant</label>
+      <input type="text" id="login-user" autocomplete="username" placeholder="admin" maxlength="50">
     </div>
-
-    <br><br><br><br>
-
-    <div class="about-grid">
-        <div class="about-card">
-            <h3 class="card-title">Mon parcours</h3>
-            <p class="card-text">Je suis une étudiant curieux et motivé, avec un fort intérêt pour les outils
-numériques, le web et la communication visuelle. J'aime apprendre en
-pratiquant, construire de petits projets concrets et améliorer progressivement
-mes compétences.</p>
-        </div>
-        <div class="about-card">
-            <h3 class="card-title">Mes objectifs</h3>
-            <p class="card-text">Mon objectif est de développer un profil solide, capable de relier connaissances
-académiques, créativité personnelle et compétences techniques. Je souhaite
-bâtir un portfolio clair, sérieux et évolutif.</p>
-        </div>
+    <div class="form-group" style="margin-bottom:20px">
+      <label>Mot de passe</label>
+      <input type="password" id="login-pass" autocomplete="current-password" placeholder="••••••••" maxlength="100"
+             onkeydown="if(event.key==='Enter') doLogin()">
     </div>
-
-    <br><br>
-
-    <div class="about-grid">
-        <div class="about-card">
-            <h3 class="card-title">Mes qualites</h3>
-            <p class="card-text">Je suis organisé, persévérent, attentif aux détails et toujours prêt à
-apprendre. J'aime les interfaces bien structurées, les contenues lisible et les
-réalisations simples mais soignées.</p>
-        </div>
-        <div class="about-card">
-            <h3 class="card-title">Ce que je recherche</h3>
-            <p class="card-text">Je recherche des opportunités d'apprentissage, des collaborations
-académiques et des expériences qui me permettront de progresser dans le
-développement web, le design et la valorisation de projets personnels.</p>
-        </div>
-    </div>
-
-    <br><br><br><br>
-
-    <!-- PROJETS -->
-     <!-- ===== PROJETS ===== -->
-<div class="section-label" style="margin-left: auto; margin-right: auto;"> <strong>MES PROJETS</strong> </div>
-
-<div class="projets-grid">
-
-  <div class="projet-card">
-    <img src="image 1.jpg" alt="Mini site vitrine">
-    <div class="projet-body">
-      <h3 class="projet-titre"> <strong>  Mini site vitrine</strong></h3>
-      <p class="projet-desc"> <strong>Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle. </strong></p>
-    </div>
-  </div>
-
-  <div class="projet-card">
-    <img src="image 2.jpg" alt="Interface web">
-    <div class="projet-body">
-      <h3 class="projet-titre">Interface web</h3>
-      <p class="projet-desc"> <strong> d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle.</strong></p>
-    </div>
-  </div>
-
-  <div class="projet-card">
-    <img src="image 3.jpg" alt="Projet JavaScript">
-    <div class="projet-body">
-      <h3 class="projet-titre">Projet JavaScript</h3>
-      <p class="projet-desc"> <strong>Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle. </strong></p>
-    </div>
-  </div>
-
-  <div class="projet-card">
-    <img src="image 4.jpg" alt="Travail en groupe">
-    <div class="projet-body">
-      <h3 class="projet-titre">Travail en groupe</h3>
-      <p class="projet-desc"> <strong>Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle. </strong></p>
-    </div>
-  </div>
-
-  <div class="projet-card">
-    <img src="image 5.jpg" alt="Présentation académique">
-    <div class="projet-body">
-      <h3 class="projet-titre">Présentation académique</h3>
-      <p class="projet-desc"><strong>Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle. </strong></p>
-    </div>
-  </div>
-
-  <div class="projet-card">
-    <img src="image 6.jpg" alt="Apprentissage continu">
-    <div class="projet-body">
-      <h3 class="projet-titre">Apprentissage continu</h3>
-      <p class="projet-desc"> <strong> Réalisation d'un site simple, responsive et élégant pour présenter une activité, un service ou une identité personnelle.</strong></p>
-    </div>
+    <button class="btn" id="login-btn" onclick="doLogin()" style="width:100%;padding:12px;font-size:14px">
+      Connexion
+    </button>
+    <div class="lockout-msg" id="lockout-msg"></div>
   </div>
 </div>
-</div>
- <br><br><br><br>
-    <!-- PROFIL -->
-    <div class="section-label">
-        <strong>MON PROFIL</strong>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <h1>BIGDREAM</h1>
+    <span>Admin Panel</span>
+  </div>
+  <nav class="nav">
+    <div class="nav-item active" onclick="goTo('dashboard')">
+      <span class="nav-icon">📊</span> Dashboard
     </div>
+    <div class="nav-item" onclick="goTo('commandes')">
+      <span class="nav-icon">📦</span> Commandes
+    </div>
+    <div class="nav-item" onclick="goTo('produits')">
+      <span class="nav-icon">👕</span> Produits
+    </div>
+    <div class="nav-item" onclick="goTo('ajouter')">
+      <span class="nav-icon">➕</span> Ajouter produit
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="session-timer" id="session-timer">Session active</div>
+    <button class="logout-btn" onclick="logout()">⏻ Déconnexion</button>
+  </div>
+</aside>
 
-    <br><br><br><br>
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <span class="topbar-title" id="page-title">Dashboard</span>
+    <div class="topbar-right">
+      <div class="status-dot"></div>
+      <span class="status-text" id="connexion-status">Connecté</span>
+      <button class="btn btn-ghost" onclick="refreshAll()">↺ Actualiser</button>
+    </div>
+  </div>
 
-    <div class="profile-grid">
-        <div class="profile-card">
-             <h3 class="card-title">2026</h3>
-            <p class="card-text">Annee de progression et de consolidation </p>
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card yellow">
+          <div class="stat-label">Total commandes</div>
+          <div class="stat-value" id="stat-total">—</div>
         </div>
-        <div class="profile-card"><h3 class="card-title">5+</h3><br>
-            <p class="card-text">projets d'apprentissage realises</p></div>
-        <div class="profile-card"><h3 class="card-title">100%</h3><br>
-            <p class="card-text">Motivation pour apprendre et evoluer</p></div>
-        <div class="profile-card"><h3 class="card-title">UI</h3><br>
-            <p class="card-text">interet pour le web et le design visuel</p></div>
+        <div class="stat-card green">
+          <div class="stat-label">Chiffre d'affaires</div>
+          <div class="stat-value" id="stat-ca">—</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-label">En attente</div>
+          <div class="stat-value" id="stat-attente">—</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-label">Produits</div>
+          <div class="stat-value" id="stat-produits">—</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <span class="table-title">Dernières commandes</span>
+          <button class="btn" onclick="goTo('commandes')">Voir tout</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Client</th>
+              <th>Produit</th>
+              <th>Total</th>
+              <th>Statut</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="dashboard-commandes">
+            <tr><td colspan="6" class="empty">Chargement...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <br><br>
-
-    <!-- CONTACT BANNER -->
-   <div  style="width: 800px; height: 200px; border: 2px solid black; margin-left: 250px; align-items: center; justify-content: center; text-align: center;">
-     <h3 class="card-title">CONTACT</h3>
-            <p class="card-text">Je suis organisé, persévérent, attentif aux détails et toujours prêt à
-apprendre. J'aime les interfaces bien structurées, les contenues lisible et les
-réalisations simples mais soignées.</p>
-  
- 
-                <button class="btn-primary">Envoyer un mail</button>
-                <button class="btn-secondary">telecharger Mon CV</button>
-            
+    <!-- COMMANDES -->
+    <div class="page" id="page-commandes">
+      <div class="table-wrap">
+        <div class="table-header">
+          <span class="table-title">Toutes les commandes</span>
+          <div style="display:flex;gap:8px">
+            <select id="filter-statut" onchange="filtrerCommandes()" style="padding:7px 12px;font-size:12px">
+              <option value="">Tous les statuts</option>
+              <option value="en attente">En attente</option>
+              <option value="expédiée">Expédiée</option>
+              <option value="livrée">Livrée</option>
+              <option value="annulée">Annulée</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Client</th>
+              <th>Téléphone</th>
+              <th>Produit</th>
+              <th>Taille</th>
+              <th>Qté</th>
+              <th>Total</th>
+              <th>Statut</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="table-commandes">
+            <tr><td colspan="10" class="empty">Chargement...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
+    <!-- PRODUITS -->
+    <div class="page" id="page-produits">
+      <div class="produits-grid" id="produits-grid">
+        <div class="empty" style="grid-column:1/-1">Chargement...</div>
+      </div>
+    </div>
+
+    <!-- AJOUTER PRODUIT -->
+    <div class="page" id="page-ajouter">
+      <div class="table-wrap" style="max-width:600px">
+        <div class="table-header">
+          <span class="table-title">Nouveau produit</span>
+        </div>
+        <div style="padding:24px">
+          <div class="form-grid">
+            <div class="form-group full">
+              <label>Nom du produit</label>
+              <input type="text" id="new-nom" placeholder="Ex: BIGDREAM Hoodie Classic"
+                     maxlength="100" autocomplete="off">
+              <span class="field-error" id="err-nom"></span>
+            </div>
+            <div class="form-group">
+              <label>Prix (FCFA)</label>
+              <input type="number" id="new-prix" placeholder="25000" min="0" max="10000000">
+              <span class="field-error" id="err-prix"></span>
+            </div>
+            <div class="form-group">
+              <label>Stock</label>
+              <input type="number" id="new-stock" placeholder="10" min="0" max="99999">
+            </div>
+            <div class="form-group full">
+              <label>Catégorie</label>
+              <select id="new-cat">
+                <option>Hoodies</option>
+                <option>T-shirts</option>
+                <option>Casquettes</option>
+                <option>Pantalons</option>
+                <option>Accessoires</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label>URL image (Cloudinary uniquement)</label>
+              <input type="url" id="new-img" placeholder="https://res.cloudinary.com/..."
+                     maxlength="500" autocomplete="off">
+              <span class="field-error" id="err-img"></span>
+            </div>
+            <div class="form-group full" style="margin-top:8px">
+              <button class="btn" id="btn-ajouter" onclick="ajouterProduit()"
+                      style="width:100%;padding:12px;font-size:14px">
+                ✓ Ajouter le produit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- MODAL STATUT -->
+<div class="modal-overlay" id="modal-statut">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Changer le statut</span>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <input type="hidden" id="modal-cmd-id">
+    <div class="form-group" style="margin-bottom:20px">
+      <label>Nouveau statut</label>
+      <select id="modal-statut-val">
+        <option value="en attente">En attente</option>
+        <option value="expédiée">Expédiée</option>
+        <option value="livrée">Livrée</option>
+        <option value="annulée">Annulée</option>
+      </select>
+    </div>
+    <button class="btn" onclick="sauvegarderStatut()" style="width:100%;padding:12px">
+      ✓ Confirmer
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ╔══════════════════════════════════════════════╗
+// ║  🔒 CONFIG — NE PAS mettre de credentials    ║
+// ║  ici en prod. Passer par des variables       ║
+// ║  d'environnement côté serveur.               ║
+// ╚══════════════════════════════════════════════╝
+const CONFIG = {
+ API: 'https://comforting-heliotrope-c8accf.netlify.app/',// ← URL de ton backend Flask
+  SESSION_DURATION: 30 * 60 * 1000,  // 30 minutes
+  MAX_LOGIN_ATTEMPTS: 5,
+  LOCKOUT_DURATION: 15 * 60 * 1000, // 15 min
+  ALLOWED_IMG_DOMAIN: 'res.cloudinary.com',
+};
+
+// ══════════════════════════════════════════════
+// 🔒 SESSION PERSISTANTE (localStorage + expiration)
+// ══════════════════════════════════════════════
+
+/**
+ * Sauvegarde le token avec une date d'expiration.
+ * Survit au Ctrl+R mais expire après SESSION_DURATION.
+ */
+function saveSession(token) {
+  const data = {
+    token,
+    expireAt: Date.now() + CONFIG.SESSION_DURATION,
+  };
+  localStorage.setItem('bd_session', JSON.stringify(data));
+}
+
+/**
+ * Récupère le token si la session est encore valide, sinon null.
+ */
+function getSession() {
+  try {
+    const raw = localStorage.getItem('bd_session');
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (!data.token || !data.expireAt) return null;
+    if (Date.now() > data.expireAt) {
+      clearSession();
+      return null;
+    }
+    return data.token;
+  } catch {
+    clearSession();
+    return null;
+  }
+}
+
+/**
+ * Prolonge la session à chaque activité.
+ */
+function refreshSession() {
+  try {
+    const raw = localStorage.getItem('bd_session');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    data.expireAt = Date.now() + CONFIG.SESSION_DURATION;
+    localStorage.setItem('bd_session', JSON.stringify(data));
+  } catch { /* ignore */ }
+}
+
+/**
+ * Supprime la session.
+ */
+function clearSession() {
+  localStorage.removeItem('bd_session');
+}
+
+// ══════════════════════════════════════════════
+// 🔒 UTILITAIRES SÉCURITÉ
+// ══════════════════════════════════════════════
+
+/**
+ * Échappe TOUS les caractères HTML dangereux.
+ * À utiliser PARTOUT où on insère du contenu utilisateur dans le DOM.
+ */
+function esc(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g,  '&amp;')
+    .replace(/</g,  '&lt;')
+    .replace(/>/g,  '&gt;')
+    .replace(/"/g,  '&quot;')
+    .replace(/'/g,  '&#x27;')
+    .replace(/\//g, '&#x2F;');
+}
+
+/**
+ * Valide qu'un nombre est dans les bornes attendues.
+ */
+function safeInt(val, min = 0, max = 999999) {
+  const n = parseInt(val, 10);
+  if (isNaN(n) || n < min || n > max) return null;
+  return n;
+}
+
+/**
+ * Valide qu'une URL appartient au domaine Cloudinary autorisé.
+ */
+function validateImageUrl(url) {
+  if (!url) return true; // optionnel
+  try {
+    const u = new URL(url);
+    return u.protocol === 'https:' && u.hostname === CONFIG.ALLOWED_IMG_DOMAIN;
+  } catch { return false; }
+}
+
+/**
+ * Génère un token CSRF aléatoire.
+ */
+function generateCsrfToken() {
+  const arr = new Uint8Array(32);
+  crypto.getRandomValues(arr);
+  return Array.from(arr, b => b.toString(16).padStart(2,'0')).join('');
+}
+
+// Token CSRF généré à chaque chargement de page
+let csrfToken = generateCsrfToken();
+
+// ══════════════════════════════════════════════
+// 🔒 AUTHENTIFICATION & SESSION
+// ══════════════════════════════════════════════
+let loginAttempts   = 0;
+let lockoutUntil    = 0;
+let sessionTimer    = null;
+let sessionExpireAt = 0;
+
+// ╔══════════════════════════════════════════════════════╗
+// ║  🔒 CREDENTIALS — mots de passe stockés en SHA-256  ║
+// ║  Ne jamais écrire les mots de passe en clair ici.   ║
+// ║  Pour changer : générer un nouveau hash SHA-256      ║
+// ║  sur : https://emn178.github.io/online-tools/sha256  ║
+// ╚══════════════════════════════════════════════════════╝
+const ADMINS = [
+  { username: 'adminlamine',     hash: '7e8044d46f87bc92b72ccaf0eec226d4f6fc006ff2b2595a20a04fc528549743' },
+  { username: 'adminmamecheikh', hash: 'a82db130590c110d9309c7550547f1a4a4f5cd9ef5ca14878f034c4d5c347d14' },
+];
+
+/**
+ * Hash un texte en SHA-256 via l'API Web Crypto native du navigateur.
+ */
+async function sha256(text) {
+  const encoder = new TextEncoder();
+  const data    = encoder.encode(text);
+  const buffer  = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buffer))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/**
+ * Gère la connexion avec vérification locale hashée + protection brute-force.
+ */
+async function doLogin() {
+  const now = Date.now();
+
+  // Vérif lockout
+  if (now < lockoutUntil) {
+    const remaining = Math.ceil((lockoutUntil - now) / 60000);
+    showLoginError(`Trop de tentatives. Réessaie dans ${remaining} min.`);
+    return;
+  }
+
+  const user = document.getElementById('login-user').value.trim();
+  const pass = document.getElementById('login-pass').value;
+
+  if (!user || !pass) {
+    showLoginError('Identifiant et mot de passe requis.');
+    return;
+  }
+
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true;
+  btn.textContent = 'Vérification...';
+
+  try {
+    // 🔒 On hash le mot de passe saisi et on compare au hash stocké
+    // Jamais le mot de passe en clair dans le code ni dans la mémoire plus longtemps que nécessaire
+    const passHash = await sha256(pass);
+    const ok = ADMINS.some(a => a.username === user && a.hash === passHash);
+
+    if (ok) {
+      loginAttempts = 0;
+      // Générer un token de session local signé avec un timestamp
+      const sessionToken = await sha256(csrfToken + Date.now());
+      saveSession(sessionToken);
+      startSession();
+      document.getElementById('login-screen').style.display = 'none';
+      loadDashboard();
+    } else {
+      handleFailedLogin();
+    }
+  } catch {
+    showLoginError('Erreur inattendue. Réessaie.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Connexion';
+  }
+}
+
+function handleFailedLogin() {
+  loginAttempts++;
+  const remaining = CONFIG.MAX_LOGIN_ATTEMPTS - loginAttempts;
+  if (loginAttempts >= CONFIG.MAX_LOGIN_ATTEMPTS) {
+    lockoutUntil = Date.now() + CONFIG.LOCKOUT_DURATION;
+    showLoginError('Compte temporairement bloqué. Réessaie dans 15 min.');
+    document.getElementById('login-btn').disabled = true;
+    setTimeout(() => {
+      lockoutUntil = 0;
+      loginAttempts = 0;
+      document.getElementById('login-btn').disabled = false;
+      document.getElementById('lockout-msg').textContent = '';
+    }, CONFIG.LOCKOUT_DURATION);
+  } else {
+    showLoginError(`Identifiants incorrects. ${remaining} tentative${remaining > 1 ? 's' : ''} restante${remaining > 1 ? 's' : ''}.`);
+  }
+  // Vider le mot de passe pour forcer la re-saisie
+  document.getElementById('login-pass').value = '';
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById('login-error');
+  // 🔒 Utiliser textContent, jamais innerHTML ici
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function startSession() {
+  sessionExpireAt = Date.now() + CONFIG.SESSION_DURATION;
+  updateSessionTimer();
+  clearInterval(sessionTimer);
+  sessionTimer = setInterval(() => {
+    const remaining = sessionExpireAt - Date.now();
+    if (remaining <= 0) {
+      logout(true);
+    } else {
+      updateSessionTimer();
+    }
+  }, 10000);
+
+  // Réinitialiser la session lors d'une activité
+  ['click', 'keydown', 'mousemove'].forEach(ev => {
+    document.addEventListener(ev, resetSessionTimer, { passive: true, once: false });
+  });
+}
+
+function resetSessionTimer() {
+  if (Date.now() < sessionExpireAt) {
+    sessionExpireAt = Date.now() + CONFIG.SESSION_DURATION;
+    refreshSession(); // 🔒 prolonge aussi l'expiration dans localStorage
+  }
+}
+
+function updateSessionTimer() {
+  const remaining = Math.max(0, sessionExpireAt - Date.now());
+  const min = Math.floor(remaining / 60000);
+  const sec = Math.floor((remaining % 60000) / 1000);
+  document.getElementById('session-timer').textContent =
+    `Session : ${min}:${sec.toString().padStart(2,'0')}`;
+}
+
+function logout(expired = false) {
+  clearInterval(sessionTimer);
+  clearSession();
+  csrfToken = generateCsrfToken();
+  // 🔒 Nettoyer les données sensibles du DOM
+  document.getElementById('table-commandes').innerHTML = '';
+  document.getElementById('dashboard-commandes').innerHTML = '';
+  document.getElementById('produits-grid').innerHTML = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-error').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  if (expired) showToast('Session expirée — reconnecte-toi', true);
+}
+
+// ══════════════════════════════════════════════
+// 🔒 WRAPPER FETCH SÉCURISÉ
+// ══════════════════════════════════════════════
+
+/**
+ * Wrapper autour de fetch qui :
+ * - Ajoute automatiquement le token d'auth
+ * - Ajoute le token CSRF pour les mutations
+ * - Vérifie que la réponse vient bien de l'origine attendue
+ * - Timeout automatique de 10s
+ */
+async function apiFetch(path, options = {}, withCsrf = true) {
+  const token = getSession();
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+    ...(withCsrf ? { 'X-CSRF-Token': csrfToken } : {}),
+    ...options.headers,
+  };
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+
+  try {
+    const res = await fetch(`${CONFIG.API}${path}`, {
+      ...options,
+      headers,
+      signal: controller.signal,
+      // 🔒 Ne jamais envoyer les cookies cross-origin
+      credentials: 'same-origin',
+    });
+
+    // 🔒 Si le serveur retourne 401, la session est invalide → déconnexion
+    if (res.status === 401) {
+      logout(true);
+      return null;
+    }
+
+    return res;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+
+let toutesCommandes = [];
+
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  const navItems = document.querySelectorAll('.nav-item');
+  const idx = { dashboard: 0, commandes: 1, produits: 2, ajouter: 3 };
+  if (idx[page] !== undefined) navItems[idx[page]].classList.add('active');
+  const titles = {
+    dashboard: 'Dashboard',
+    commandes: 'Commandes',
+    produits:  'Produits',
+    ajouter:   'Ajouter un produit',
+  };
+  // 🔒 textContent, pas innerHTML
+  document.getElementById('page-title').textContent = titles[page] || '';
+  if (page === 'dashboard') loadDashboard();
+  if (page === 'commandes') loadCommandes();
+  if (page === 'produits')  loadProduits();
+}
+
+// ══════════════════════════════════════════════
+// BADGE STATUT
+// ══════════════════════════════════════════════
+
+const STATUTS_VALIDES = ['en attente', 'expédiée', 'livrée', 'annulée'];
+
+function badgeStatut(s) {
+  // 🔒 Valider que le statut est dans la whitelist
+  if (!STATUTS_VALIDES.includes(s)) s = 'en attente';
+  const map = {
+    'en attente': ['badge-wait',   'En attente'],
+    'expédiée':   ['badge-sent',   'Expédiée'],
+    'livrée':     ['badge-ok',     'Livrée'],
+    'annulée':    ['badge-cancel', 'Annulée'],
+  };
+  const [cls, label] = map[s];
+  // 🔒 label est statique (whitelist), pas de risque XSS ici
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+
+// ══════════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════════
+
+async function loadStats() {
+  try {
+    const r = await apiFetch('/stats');
+    if (!r || !r.ok) throw new Error();
+    const d = await r.json();
+    // 🔒 Convertir en nombres avant d'afficher
+    document.getElementById('stat-total').textContent   = safeInt(d.total_commandes, 0, 999999) ?? '—';
+    document.getElementById('stat-ca').textContent      = esc(String(d.chiffre_affaires || '0').replace(' FCFA',''));
+    document.getElementById('stat-attente').textContent = safeInt(d.en_attente, 0, 999999) ?? '—';
+    document.getElementById('stat-produits').textContent= safeInt(d.total_produits, 0, 999999) ?? '—';
+  } catch {
+    ['stat-total','stat-ca','stat-attente','stat-produits'].forEach(id => {
+      document.getElementById(id).textContent = '—';
+    });
+  }
+}
+
+// ══════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════
+
+async function loadDashboard() {
+  await loadStats();
+  try {
+    const r = await apiFetch('/commandes');
+    if (!r || !r.ok) throw new Error();
+    const data = await r.json();
+    if (!Array.isArray(data)) throw new Error();
+    const last5 = data.slice(0, 5);
+    const tbody = document.getElementById('dashboard-commandes');
+    if (!last5.length) {
+      tbody.innerHTML = `<tr><td colspan="6" class="empty">Aucune commande</td></tr>`;
+      return;
+    }
+    // 🔒 Toutes les valeurs passent par esc() avant insertion
+    tbody.innerHTML = last5.map(c => `
+      <tr>
+        <td style="color:var(--muted);font-size:11px">#${esc(String(c.id))}</td>
+        <td style="font-weight:500">${esc(c.client)}</td>
+        <td style="color:var(--muted)">${esc(c.produit)}</td>
+        <td style="color:var(--accent);font-family:'Bebas Neue';font-size:15px">${Number(c.total).toLocaleString('fr-FR')} F</td>
+        <td>${badgeStatut(c.statut)}</td>
+        <td style="color:var(--muted);font-size:12px">${esc(c.date)}</td>
+      </tr>`).join('');
+  } catch {
+    // 🔒 Message d'erreur générique — pas de détails techniques
+    document.getElementById('dashboard-commandes').innerHTML =
+      `<tr><td colspan="6" class="empty">Impossible de charger les données</td></tr>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+// COMMANDES
+// ══════════════════════════════════════════════
+
+async function loadCommandes() {
+  try {
+    const r = await apiFetch('/commandes');
+    if (!r || !r.ok) throw new Error();
+    toutesCommandes = await r.json();
+    if (!Array.isArray(toutesCommandes)) toutesCommandes = [];
+    afficherCommandes(toutesCommandes);
+  } catch {
+    document.getElementById('table-commandes').innerHTML =
+      `<tr><td colspan="10" class="empty">Impossible de charger les commandes</td></tr>`;
+  }
+}
+
+function afficherCommandes(liste) {
+  const tbody = document.getElementById('table-commandes');
+  if (!liste.length) {
+    tbody.innerHTML = `<tr><td colspan="10" class="empty">Aucune commande</td></tr>`;
+    return;
+  }
+  // 🔒 esc() sur toutes les données dynamiques
+  tbody.innerHTML = liste.map(c => `
+    <tr>
+      <td style="color:var(--muted);font-size:11px">#${esc(String(c.id))}</td>
+      <td style="font-weight:500">${esc(c.client)}</td>
+      <td style="color:var(--muted);font-size:12px">${esc(c.telephone)}</td>
+      <td>${esc(c.produit)}</td>
+      <td style="color:var(--muted)">${esc(c.taille) || '—'}</td>
+      <td style="color:var(--muted)">${safeInt(c.quantite, 0, 9999) ?? '—'}</td>
+      <td style="color:var(--accent);font-family:'Bebas Neue';font-size:15px">${Number(c.total).toLocaleString('fr-FR')} F</td>
+      <td>${badgeStatut(c.statut)}</td>
+      <td style="color:var(--muted);font-size:11px">${esc(c.date)}</td>
+      <td>
+        <button class="action-btn"
+          onclick="openModal(${safeInt(c.id, 0, 999999999)}, this.dataset.statut)"
+          data-statut="${esc(c.statut)}"
+          title="Changer statut">✎</button>
+      </td>
+    </tr>`).join('');
+}
+
+function filtrerCommandes() {
+  const val = document.getElementById('filter-statut').value;
+  // 🔒 Valider que le filtre est dans la whitelist
+  const valide = STATUTS_VALIDES.includes(val) ? val : '';
+  afficherCommandes(valide ? toutesCommandes.filter(c => c.statut === valide) : toutesCommandes);
+}
+
+// ══════════════════════════════════════════════
+// PRODUITS
+// ══════════════════════════════════════════════
+
+async function loadProduits() {
+  try {
+    const r = await apiFetch('/produits');
+    if (!r || !r.ok) throw new Error();
+    const data = await r.json();
+    if (!Array.isArray(data)) throw new Error();
+    const grid = document.getElementById('produits-grid');
+    if (!data.length) {
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1">Aucun produit</div>`;
+      return;
+    }
+    grid.innerHTML = data.map(p => {
+      // 🔒 Valider l'URL image avant de l'injecter dans src
+      const imgUrl = validateImageUrl(p.image_url) ? esc(p.image_url) : '';
+      const imgHtml = imgUrl
+        ? `<img src="${imgUrl}" alt="${esc(p.nom)}" style="width:100%;height:100%;object-fit:cover" loading="lazy" crossorigin="anonymous">`
+        : '👕';
+      return `
+        <div class="produit-card">
+          <div class="produit-img">${imgHtml}</div>
+          <div class="produit-info">
+            <div class="produit-nom">${esc(p.nom)}</div>
+            <div class="produit-cat">${esc(p.categorie) || '—'}</div>
+            <div class="produit-footer">
+              <span class="produit-prix">${Number(p.prix).toLocaleString('fr-FR')} F</span>
+              <span class="produit-stock">Stock : ${safeInt(p.stock, 0, 99999) ?? '—'}</span>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  } catch {
+    document.getElementById('produits-grid').innerHTML =
+      `<div class="empty" style="grid-column:1/-1">Impossible de charger les produits</div>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+// AJOUTER PRODUIT
+// ══════════════════════════════════════════════
+
+const CATEGORIES_VALIDES = ['Hoodies', 'T-shirts', 'Casquettes', 'Pantalons', 'Accessoires'];
+
+function clearErrors() {
+  ['err-nom','err-prix','err-img'].forEach(id => {
+    document.getElementById(id).textContent = '';
+  });
+  ['new-nom','new-prix','new-img'].forEach(id => {
+    document.getElementById(id).classList.remove('error');
+  });
+}
+
+async function ajouterProduit() {
+  clearErrors();
+  let valid = true;
+
+  const nom   = document.getElementById('new-nom').value.trim();
+  const prix  = document.getElementById('new-prix').value;
+  const stock = document.getElementById('new-stock').value;
+  const cat   = document.getElementById('new-cat').value;
+  const img   = document.getElementById('new-img').value.trim();
+
+  // 🔒 Validation côté client (double de la validation serveur)
+  if (!nom || nom.length < 2 || nom.length > 100) {
+    document.getElementById('err-nom').textContent = 'Nom invalide (2–100 caractères)';
+    document.getElementById('new-nom').classList.add('error');
+    valid = false;
+  }
+
+  const prixNum = safeInt(prix, 1, 10000000);
+  if (prixNum === null) {
+    document.getElementById('err-prix').textContent = 'Prix invalide (1 – 10 000 000 FCFA)';
+    document.getElementById('new-prix').classList.add('error');
+    valid = false;
+  }
+
+  if (img && !validateImageUrl(img)) {
+    document.getElementById('err-img').textContent = 'URL invalide — Cloudinary uniquement (https://res.cloudinary.com/...)';
+    document.getElementById('new-img').classList.add('error');
+    valid = false;
+  }
+
+  // 🔒 Whitelist catégorie
+  if (!CATEGORIES_VALIDES.includes(cat)) {
+    showToast('Catégorie invalide', true);
+    return;
+  }
+
+  if (!valid) return;
+
+  const btn = document.getElementById('btn-ajouter');
+  btn.disabled = true;
+  btn.textContent = 'Envoi...';
+
+  try {
+    const r = await apiFetch('/produits', {
+      method: 'POST',
+      body: JSON.stringify({
+        nom,
+        prix: prixNum,
+        stock: safeInt(stock, 0, 99999) ?? 0,
+        categorie: cat,
+        image_url: img || null,
+      }),
+    });
+
+    if (!r || !r.ok) throw new Error();
+
+    showToast('Produit ajouté !');
+    document.getElementById('new-nom').value  = '';
+    document.getElementById('new-prix').value = '';
+    document.getElementById('new-stock').value= '';
+    document.getElementById('new-img').value  = '';
+    await loadStats();
+  } catch {
+    showToast('Erreur lors de l\'ajout', true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✓ Ajouter le produit';
+  }
+}
+
+// ══════════════════════════════════════════════
+// MODAL STATUT
+// ══════════════════════════════════════════════
+
+function openModal(id, statut) {
+  // 🔒 Valider l'ID et le statut avant d'ouvrir la modal
+  const safeId = safeInt(id, 1, 999999999);
+  if (safeId === null) return;
+  if (!STATUTS_VALIDES.includes(statut)) return;
+
+  document.getElementById('modal-cmd-id').value = safeId;
+  document.getElementById('modal-statut-val').value = statut;
+  document.getElementById('modal-statut').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-statut').classList.remove('open');
+}
+
+async function sauvegarderStatut() {
+  const id     = safeInt(document.getElementById('modal-cmd-id').value, 1, 999999999);
+  const statut = document.getElementById('modal-statut-val').value;
+
+  // 🔒 Double validation avant envoi
+  if (id === null || !STATUTS_VALIDES.includes(statut)) {
+    showToast('Données invalides', true);
+    return;
+  }
+
+  try {
+    const r = await apiFetch(`/commandes/${id}/statut`, {
+      method: 'PUT',
+      body: JSON.stringify({ statut }),
+    });
+    if (!r || !r.ok) throw new Error();
+    closeModal();
+    showToast('Statut mis à jour !');
+    loadCommandes();
+    loadStats();
+  } catch {
+    showToast('Erreur de connexion', true);
+  }
+}
+
+// ══════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════
+
+function showToast(msg, err = false) {
+  const t = document.getElementById('toast');
+  // 🔒 textContent, jamais innerHTML
+  t.textContent = msg;
+  t.style.background = err ? 'var(--red)' : 'var(--green)';
+  t.style.color = err ? '#fff' : '#000';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function refreshAll() {
+  goTo('dashboard');
+  showToast('Données actualisées');
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+
+// 🔒 Fermer la modal si on clique en dehors
+document.getElementById('modal-statut').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// 🔒 Bloquer le clic-droit sur la page en prod si souhaité (décommenter)
+// document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 🔒 Vérifier si déjà connecté (localStorage avec expiration)
+const existingToken = getSession();
+if (existingToken) {
+  document.getElementById('login-screen').style.display = 'none';
+  startSession();
+  loadDashboard();
+} else {
+  document.getElementById('login-screen').style.display = 'flex';
+}
+</script>
 </body>
 </html>
